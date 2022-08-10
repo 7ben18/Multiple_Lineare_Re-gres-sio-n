@@ -1,1 +1,1 @@
-# Multiple_Lineare_Re-gres-sio-n
+# Multiple_Lineare_Regression
