@@ -1,0 +1,49 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Einlesen der Kleider Datei
+```{r}
+kleider <- read.csv("kleider.csv")
+kleider
+```
+
+# Struktur von DataFrame betrachten
+```{r}
+str(kleider)
+```
+
+# Histogramme erstellen
+```{r}
+par(mfrow=c(1,3))
+hist(kleider$groesse, main="groesse", col="limegreen")
+hist(kleider$gewicht, main="gewicht", col="limegreen")
+hist(kleider$kleidergroesse, main="kleidergroesse", col="limegreen")
+```
+
+```{r}
+par(mfrow=c(1,3))
+plot(x=kleider$groesse, y=kleider$kleidergroesse, col = "blue")
+plot(x=kleider$groesse, y=kleider$gewicht, col = "blue")
+plot(x=kleider$gewicht, y=kleider$kleidergroesse, col="blue")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

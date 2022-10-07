@@ -1,0 +1,74 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Daten einlesen
+```{r}
+farm <- read.csv("farm.csv")
+farm
+```
+
+# Struktur vom DataFrame ausgeben
+```{r}
+str(farm)
+```
+
+# Datentyp umwandeln von region und industry
+```{r}
+farm$region <- factor(farm$region)
+farm$industry <- factor(farm$industry, labels = c("Weizen", 
+                                                  "Weizen_Schaf_Rind", 
+                                                  "Schaf", 
+                                                  "Rind", 
+                                                  "Schaf_Rind"))
+
+farm
+```
+
+# Pruefen, ob transformationen noetig sind
+```{r}
+par(mfrow=c(1,2))
+plot(table(farm$region), main="Region")
+plot(table(farm$industry), main="Industry")
+```
+# Histogram fuer Aufwand
+```{r}
+par(mfrow=c(1,2))
+hist(farm$aufwand, main="Aufwand", col = "green")
+hist(log(farm$aufwand), main = "log(Aufwand)", col = "green")
+
+par(mfrow=c(1,2))
+hist(farm$ertrag, main="Ertrag", col = "blue")
+hist(log(farm$ertrag), main="log(Ertrag)", col = "blue")
+```
+
+# Multiple Regression erstellen
+```{r}
+fit <- lm(log(ertrag) ~ log(aufwand) + region + industry, data = farm)
+summary(fit)
+
+```
+
+```{r}
+par(mfrow=c(1,3))
+plot(fit, which=1, caption = "", main = "Residuals vs. Fitted")
+plot(fit, which=2, caption = " ", main = "Normal plot")
+
+library(MASS)
+sresid <- studres(fit)
+hist(sresid, freq=FALSE, main="Distribution of Studentized Residuals")
+```
+
+# Predict
+```{r}
+newdat <- data.frame(aufwand = 10^5, region = "111", industry = "Rind")
+y_predict = predict(fit, newdata = newdat)
+
+# Printing out the results
+exp(y_predict - summary(fit)$sigma^2)
+exp(y_predict + summary(fit)$sigma^2)
+
+```
+
+
